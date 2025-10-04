@@ -1,0 +1,623 @@
+{
+    "scripts": {
+        "pre_test": {
+            "command": "python tests/scripts/analytic_functions_setup.py --action setup",
+            "description": "Setup Analytic functions test environment"
+        },
+        "post_test": {
+            "command": "python tests/scripts/analytic_functions_setup.py --action cleanup",
+            "description": "Teardown Analytic functions test environment"
+        }
+    },
+    "test_cases": {
+        "ANOVA": [
+            {
+                "name": "anova_test_case_1",
+                "parameters": {
+                    "data": "insect_sprays",
+                    "group_columns": ["groupC", "groupD"],
+                    "alpha": 0.06
+                }
+            }
+        ],
+        "Antiselect": [
+            {
+                "name": "antiselect_test_case_1",
+                "parameters": {
+                    "data": "sales",
+                    "exclude": ["Jan", "Feb"]
+                }
+            }
+        ],
+        "Apriori": [
+            {
+                "name": "apriori_test_case_1",
+                "parameters": {
+                    "data": "trans_dense",
+                    "target_column": "item",
+                    "partition_columns": ["location"],
+                    "max_len": 2,
+                    "patterns_or_rules": "rules",
+                    "support": 0.01
+                }
+            }
+        ],
+        "Attribution": [
+            {
+                "name": "attribution_test_case_1",
+                "parameters": {
+                        "data": "attribution_sample_table1",
+                        "data_partition_column": "user_id",
+                        "data_order_column": "time_stamp",
+                        "data_optional": "attribution_sample_table2",
+                        "data_optional_partition_column": "user_id",
+                        "data_optional_order_column": "time_stamp",
+                        "event_column": "event",
+                        "conversion_data": "conversion_event_table",
+                        "optional_data": "optional_event_table",
+                        "timestamp_column": "time_stamp",
+                        "window_size": "rows:10&seconds:20",
+                        "model1_type": "model1_table",
+                        "model2_type": "model2_table"
+                }
+            }
+        ],
+        "BincodeFit": [
+            {
+                "name": "bincodefit_test_case_1",
+                "parameters": {
+                    "data": "titanic",
+                    "target_columns": "age",
+                    "nbins": 2,
+                    "label_prefix": "Age Group",
+                    "method_type": "EQUAL-WIDTH"
+                }
+            }
+        ],
+        "BincodeTransform": [
+            {
+                "name": "bincodetransform_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "CFilter": [
+            {
+                "name": "cfilter_test_case_1",
+                "parameters": {
+                    "data": "grocery_transaction",
+                    "target_column": "item",
+                    "transaction_id_columns": "tranid",
+                    "max_distinct_items": 100
+                }
+            }
+        ],
+        "CategoricalSummary": [
+            {
+                "name": "categoricalsummary_test_case_1",
+                "parameters": {
+                    "data": "titanic",
+                    "target_columns": "sex"
+                }
+            }
+        ],
+        "ChiSq": [
+            {
+                "name": "chisq_test_case_1",
+                "parameters": {
+                    "data": "chi_sq",
+                    "alpha": 0.5
+                }
+            }
+        ],
+        "ClassificationEvaluator": [
+            {
+                "name": "classificationevaluator_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "ColumnSummary": [
+            {
+                "name": "columnsummary_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "ColumnTransformer": [
+            {
+                "name": "columntransformer_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "ConvertTo": [
+            {
+                "name": "convertto_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "DecisionForest": [
+            {
+                "name": "decisionforest_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "DecisionForestPredict": [
+            {
+                "name": "decisionforestpredict_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "FTest": [
+            {
+                "name": "ftest_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "FillRowId": [
+            {
+                "name": "fillrowid_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "Fit": [
+            {
+                "name": "fit_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "GLM": [
+            {
+                "name": "glm_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "GLMPerSegment": [
+            {
+                "name": "glmpersegment_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "GLMPredict": [
+            {
+                "name": "glmpredict_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "GLMPredictPerSegment": [
+            {
+                "name": "glmpredictpersegment_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "GetFutileColumns": [
+            {
+                "name": "getfutilecolumns_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "GetRowsWithMissingValues": [
+            {
+                "name": "getrowswithmissingvalues_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "GetRowsWithoutMissingValues": [
+            {
+                "name": "getrowswithoutmissingvalues_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "Histogram": [
+            {
+                "name": "histogram_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "KMeans": [
+            {
+                "name": "kmeans_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "KMeansPredict": [
+            {
+                "name": "kmeanspredict_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "KNN": [
+            {
+                "name": "knn_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "MovingAverage": [
+            {
+                "name": "movingaverage_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "NERExtractor": [
+            {
+                "name": "nerextractor_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "NGramSplitter": [
+            {
+                "name": "ngramsplitter_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "NPath": [
+            {
+                "name": "npath_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "NaiveBayes": [
+            {
+                "name": "naivebayes_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "NaiveBayesTextClassifierPredict": [
+            {
+                "name": "naivebayestextclassifierpredict_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "NaiveBayesTextClassifierTrainer": [
+            {
+                "name": "naivebayestextclassifiertrainer_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "NonLinearCombineFit": [
+            {
+                "name": "nonlinearcombinefit_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "NonLinearCombineTransform": [
+            {
+                "name": "nonlinearcombinetransform_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "NumApply": [
+            {
+                "name": "numapply_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "OneClassSVM": [
+            {
+                "name": "oneclasssvm_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "OneClassSVMPredict": [
+            {
+                "name": "oneclasssvmpredict_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "OneHotEncodingFit": [
+            {
+                "name": "onehotencodingfit_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "OneHotEncodingTransform": [
+            {
+                "name": "onehotencodingtransform_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "OrdinalEncodingFit": [
+            {
+                "name": "ordinalencodingfit_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "OrdinalEncodingTransform": [
+            {
+                "name": "ordinalencodingtransform_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "OutlierFilterFit": [
+            {
+                "name": "outlierfilterfit_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "OutlierFilterTransform": [
+            {
+                "name": "outlierfiltertransform_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "Pack": [
+            {
+                "name": "pack_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "Pivoting": [
+            {
+                "name": "pivoting_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "PolynomialFeaturesFit": [
+            {
+                "name": "polynomialfeaturesfit_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "PolynomialFeaturesTransform": [
+            {
+                "name": "polynomialfeaturestransform_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "QQNorm": [
+            {
+                "name": "qqnorm_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "ROC": [
+            {
+                "name": "roc_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "RandomProjectionFit": [
+            {
+                "name": "randomprojectionfit_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "RandomProjectionMinComponents": [
+            {
+                "name": "randomprojectionmincomponents_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "RandomProjectionTransform": [
+            {
+                "name": "randomprojectiontransform_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "RegressionEvaluator": [
+            {
+                "name": "regressionevaluator_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "RoundColumns": [
+            {
+                "name": "roundcolumns_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "RowNormalizeFit": [
+            {
+                "name": "rownormalizefit_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "RowNormalizeTransform": [
+            {
+                "name": "rownormalizetransform_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "SMOTE": [
+            {
+                "name": "smote_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "SVM": [
+            {
+                "name": "svm_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "SVMPredict": [
+            {
+                "name": "svmpredict_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "SVMSparsePredict": [
+            {
+                "name": "svmsparsepredict_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "ScaleFit": [
+            {
+                "name": "scalefit_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "ScaleTransform": [
+            {
+                "name": "scaletransform_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "SentimentExtractor": [
+            {
+                "name": "sentimentextractor_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "Sessionize": [
+            {
+                "name": "sessionize_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "Shap": [
+            {
+                "name": "shap_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "Silhouette": [
+            {
+                "name": "silhouette_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "SimpleImputeFit": [
+            {
+                "name": "simpleimputefit_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "SimpleImputeTransform": [
+            {
+                "name": "simpleimputetransform_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "StrApply": [
+            {
+                "name": "strapply_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "StringSimilarity": [
+            {
+                "name": "stringsimilarity_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "TDDecisionForestPredict": [
+            {
+                "name": "tddecisionforestpredict_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "TDGLMPredict": [
+            {
+                "name": "tdglmpredict_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "TDNaiveBayesPredict": [
+            {
+                "name": "tdnaivebayespredict_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "TFIDF": [
+            {
+                "name": "tfidf_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "TargetEncodingFit": [
+            {
+                "name": "targetencodingfit_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "TargetEncodingTransform": [
+            {
+                "name": "targetencodingtransform_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "TextMorph": [
+            {
+                "name": "textmorph_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "TextParser": [
+            {
+                "name": "textparser_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "TrainTestSplit": [
+            {
+                "name": "traintestsplit_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "Transform": [
+            {
+                "name": "transform_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "UnivariateStatistics": [
+            {
+                "name": "univariatestatistics_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "Unpack": [
+            {
+                "name": "unpack_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "Unpivoting": [
+            {
+                "name": "unpivoting_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "VectorDistance": [
+            {
+                "name": "vectordistance_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "WhichMax": [
+            {
+                "name": "whichmax_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "WhichMin": [
+            {
+                "name": "whichmin_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "WordEmbeddings": [
+            {
+                "name": "wordembeddings_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "XGBoost": [
+            {
+                "name": "xgboost_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "XGBoostPredict": [
+            {
+                "name": "xgboostpredict_test_case_1",
+                "parameters": {}
+            }
+        ],
+        "ZTest": [
+            {
+                "name": "ztest_test_case_1",
+                "parameters": {}
+            }
+        ]
+    }
+}

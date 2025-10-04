@@ -274,8 +274,7 @@ def create_mcp_app(settings: Settings):
     else:
         logger.warning("No module loader available, skipping code-defined tool registration")
 
-    # TODO: Hardcoding the names for now. Later we can make it dynamic if needed.
-    funcs = ['Antiselect', 'KMeans', 'WhichMax']
+    from teradata_mcp_server.tools.constants import TD_ANALYTIC_FUNCS as funcs
     if enable_analytic_functions:
 
         tdml_processed_funcs = set(_JsonStore._get_function_list()[0].keys())
