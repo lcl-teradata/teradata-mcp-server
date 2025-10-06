@@ -178,23 +178,25 @@
             {
                 "name": "glm_test_case_1",
                 "parameters": {
-                        "data": "housing_train_segment",
-                        "input_columns": [
-                            "bedrooms",
-                            "bathrms",
-                            "stories",
-                            "driveway",
-                            "recroom",
-                            "fullbase",
-                            "gashw",
-                            "airco"
-                        ],
-                        "response_column": "homestyle",
-                        "family": "binomial",
-                        "iter_max": 1000,
-                        "data_partition_column": "partition_id",
-                        "parameter_data": "housing_parameter",
-                        "parameter_data_partition_column": "partition_id"
+                            "data": "boston_transformed_data",
+                            "input_columns": [
+                                "indus",
+                                "chas",
+                                "nox",
+                                "rm"
+                            ],
+                            "response_column": "medv",
+                            "family": "GAUSSIAN",
+                            "lambda1": 0.02,
+                            "alpha": 0.33,
+                            "batch_size": 10,
+                            "learning_rate": "optimal",
+                            "iter_max": 36,
+                            "iter_num_no_change": 100,
+                            "tolerance": 0.0001,
+                            "initial_eta": 0.02,
+                            "stepwise_direction": "backward",
+                            "max_steps_num": 10
                 }
             }
         ],
@@ -221,12 +223,10 @@
             {
                 "name": "glmpredict_test_case_1",
                 "parameters": {
-                    "id_column": "sn",
-                    "newdata": "housing_seg",
+                    "id_column": "id",
+                    "newdata": "boston_transformed_data",
                     "object": "glm_op",
-                    "accumulate": "price",
-                    "newdata_partition_column": "partition_id",
-                    "object_partition_column": "partition_id"
+                    "accumulate": "medv"
                 }
             }
         ],
@@ -410,8 +410,7 @@
                     "model_type": "Bernoulli",
                     "model_token_column": "token",
                     "model_category_column": "category",
-                    "model_prob_column": "prob",
-                    "newdata_partition_column": "doc_id"
+                    "model_prob_column": "prob"
                 }
             }
         ],
@@ -423,8 +422,7 @@
                     "token_column": "token",
                     "doc_id_column": "doc_id",
                     "doc_category_column": "category",
-                    "model_type": "Bernoulli",
-                    "data_partition_column": "category"
+                    "model_type": "Bernoulli"
                 }
             }
         ],
