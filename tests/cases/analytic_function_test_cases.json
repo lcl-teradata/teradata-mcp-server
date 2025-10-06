@@ -42,26 +42,6 @@
                 }
             }
         ],
-        "Attribution": [
-            {
-                "name": "attribution_test_case_1",
-                "parameters": {
-                        "data": "attribution_sample_table1",
-                        "data_partition_column": "user_id",
-                        "data_order_column": "time_stamp",
-                        "data_optional": "attribution_sample_table2",
-                        "data_optional_partition_column": "user_id",
-                        "data_optional_order_column": "time_stamp",
-                        "event_column": "event",
-                        "conversion_data": "conversion_event_table",
-                        "optional_data": "optional_event_table",
-                        "timestamp_column": "time_stamp",
-                        "window_size": "rows:10&seconds:20",
-                        "model1_type": "model1_table",
-                        "model2_type": "model2_table"
-                }
-            }
-        ],
         "BincodeFit": [
             {
                 "name": "bincodefit_test_case_1",
@@ -151,7 +131,8 @@
                     "data": "titanic",
                     "target_columns": ["fare"],
                     "target_datatype": "integer",
-                    "accumulate": ["passenger", "name", "ticket"]
+                    "accumulate": ["passenger", "name", "ticket"],
+                    "output_table_name": "convert_to_output_tbl"
                 }
             }
         ],
@@ -200,51 +181,6 @@
                 }
             }
         ],
-        "GLM": [
-            {
-                "name": "glm_test_case_1",
-                "parameters": {
-                            "data": "boston_transformed_data",
-                            "input_columns": [
-                                "indus",
-                                "chas",
-                                "nox",
-                                "rm"
-                            ],
-                            "response_column": "medv",
-                            "family": "GAUSSIAN",
-                            "lambda1": 0.02,
-                            "alpha": 0.33,
-                            "batch_size": 10,
-                            "learning_rate": "optimal",
-                            "iter_max": 36,
-                            "iter_num_no_change": 100,
-                            "tolerance": 0.0001,
-                            "initial_eta": 0.02,
-                            "stepwise_direction": "backward",
-                            "max_steps_num": 10
-                }
-            }
-        ],
-        "GLMPerSegment": [
-            {
-                "name": "glmpersegment_test_case_1",
-                "parameters": {
-                        "data": "gaussian_housing_train",
-                        "data_partition_column": "stories",
-                        "input_columns": [
-                            "garagepl",
-                            "lotsize",
-                            "bedrooms",
-                            "bathrms"
-                        ],
-                        "response_column": "price",
-                        "family": "Gaussian",
-                        "iter_max": 1000,
-                        "batch_size": 9
-                }
-            }
-        ],
         "TDGLMPredict": [
             {
                 "name": "glmpredict_test_case_1",
@@ -253,18 +189,6 @@
                     "newdata": "boston_transformed_data",
                     "object": "glm_op",
                     "accumulate": "medv"
-                }
-            }
-        ],
-        "GLMPredictPerSegment": [
-            {
-                "name": "glmpredictpersegment_test_case_1",
-                "parameters": {
-                        "newdata": "gaussian_housing_train",
-                        "newdata_partition_column": "stories",
-                        "object": "glm_per_segment_op",
-                        "object_partition_column": "stories",
-                        "id_column": "sn"
                 }
             }
         ],
@@ -395,33 +319,6 @@
                     "punctuation": "`~#^&*()-",
                     "reset": ".,?!",
                     "total_gram_count": false
-                }
-            }
-        ],
-        "NPath": [
-            {
-                "name": "npath_test_case_1",
-                "parameters": {
-                    "data1": "impressions",
-                    "data1_partition_column": "userid",
-                    "data1_order_column": "ts",
-                    "data2": "clicks2",
-                    "data2_partition_column": "userid",
-                    "data2_order_column": "ts",
-                    "data3": "tv_spots",
-                    "data3_partition_column": "ts",
-                    "data3_order_column": "ts",
-                    "result": [
-                        "COUNT(* of imp) as imp_cnt",
-                        "COUNT(* of tv_imp) as tv_imp_cnt"
-                    ],
-                    "mode": "nonoverlapping",
-                    "pattern": "(imp|tv_imp)*.click",
-                    "symbols": [
-                        "true as imp",
-                        "true as click",
-                        "true as tv_imp"
-                    ]
                 }
             }
         ],
@@ -589,20 +486,6 @@
                     "delimiter": ",",
                     "accumulate": "city",
                     "include_column_name": true
-                }
-            }
-        ],
-        "Pivoting": [
-            {
-                "name": "pivoting_test_case_1",
-                "parameters": {
-                    "data": "titanic_dataset_unpivoted",
-                    "partition_columns": "passenger",
-                    "target_columns": "AttributeValue",
-                    "accumulate": "survived",
-                    "rows_per_partition": 2,
-                    "data_partition_column": "passenger",
-                    "data_order_column": "AttributeName"
                 }
             }
         ],
@@ -817,19 +700,6 @@
                 "parameters": {
                     "text_column": "review",
                     "data": "sentiment_extract_input"
-                }
-            }
-        ],
-        "Sessionize": [
-            {
-                "name": "sessionize_test_case_1",
-                "parameters": {
-                        "data": "sessionize_table",
-                        "data_partition_column": "partition_id",
-                        "data_order_column": "clicktime",
-                        "time_column": "clicktime",
-                        "time_out": 60.0,
-                        "click_lag": 0.2
                 }
             }
         ],
