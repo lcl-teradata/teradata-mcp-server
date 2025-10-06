@@ -160,22 +160,7 @@
                 "name": "decisionforest_test_case_1",
                 "parameters": {
                             "data": "boston",
-                            "input_columns": [
-                                "crim",
-                                "zn",
-                                "indus",
-                                "chas",
-                                "nox",
-                                "rm",
-                                "age",
-                                "dis",
-                                "rad",
-                                "tax",
-                                "ptratio",
-                                "black",
-                                "lstat"
-                            ],
-                            "response_column": "medv",
+                            "formula": "medv ~ crim+zn+indus+chas+nox+rm+age+dis+rad+tax+ptratio+black+lstat",
                             "max_depth": 12,
                             "num_trees": 4,
                             "min_node_size": 1,
