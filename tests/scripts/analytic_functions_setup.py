@@ -49,10 +49,16 @@ def main():
             "model2_table"
         ])
 
-        # Setup for BincodeFit
+        # Setup for BincodeFit & Transform.
         load_example_data("teradataml", ["titanic", "bin_fit_ip"])
-
-        # Setup for BincodeTransform
+        titanic = DataFrame.from_table("titanic")
+        bin_code_2 = BincodeFit(data=titanic,
+                                target_columns='age',
+                                method_type='Equal-Width',
+                                nbins=2,
+                                label_prefix='label_prefix'
+                                )
+        bin_code_2.output.to_sql(table_name="bin_fit_op", if_exists="replace")
 
         # Setup for CFilter
         load_example_data("dataframe", ["grocery_transaction"])
@@ -81,6 +87,25 @@ def main():
                               label_prefix='label_prefix')
         bin_code.output.to_sql(table_name="bin_fit_op", if_exists="replace")
 
+        # Setup for DecisionForest & Predict.
+        load_example_data("decisionforest", ["boston"])
+        boston = DataFrame.from_table("boston")
+
+        DecisionForest_out = DecisionForest(data=boston,
+                                            input_columns=['crim', 'zn', 'indus', 'chas', 'nox', 'rm',
+                                                           'age', 'dis', 'rad', 'tax', 'ptratio', 'black',
+                                                           'lstat'],
+                                            response_column='medv',
+                                            max_depth=12,
+                                            num_trees=4,
+                                            min_node_size=1,
+                                            mtry=3,
+                                            mtry_seed=1,
+                                            seed=1,
+                                            tree_type='REGRESSION')
+        DecisionForest_out.result.to_sql(table_name="decision_forest_op", if_exists="replace")
+
+        # Setup for OneHotEncodingFit & Transform
         one_hot_encoding = OneHotEncodingFit(data=titanic,
                                              is_input_dense=True,
                                              target_column="sex",
@@ -410,8 +435,27 @@ def main():
         # Setup for StringSimilarity
         load_example_data("stringsimilarity", ["strsimilarity_input"])
 
-        # Setup for TDDecisionForestPredict
         # Setup for TDNaiveBayesPredict
+
+        # Load the example data.
+        load_example_data("decisionforestpredict", ["housing_train", "housing_test"])
+
+        # Create teradataml DataFrame objects.
+        housing_train = DataFrame.from_table("housing_train")
+
+        # Check the list of available analytic functions.
+        display_analytic_functions()
+
+        # Import function  TDNaiveBayesPredict.
+        from teradataml import NaiveBayes
+
+        # Example 1: TDNaiveBayesPredict function to predict the classification label using Dense input.
+        NaiveBayes_out = NaiveBayes(data=housing_train, response_column='homestyle',
+                                    numeric_inputs=['price', 'lotsize', 'bedrooms', 'bathrms', 'stories', 'garagepl'],
+                                    categorical_inputs=['driveway', 'recroom', 'fullbase', 'gashw', 'airco',
+                                                        'prefarea'])
+        NaiveBayes_out.result.to_sql(table_name="naive_bayes_op", if_exists="replace")
+
         # Setup for TFIDF
         load_example_data('naivebayestextclassifier', "token_table")
 

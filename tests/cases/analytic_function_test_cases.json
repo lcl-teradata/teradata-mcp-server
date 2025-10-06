@@ -74,6 +74,16 @@
                 }
             }
         ],
+        "BincodeTransform": [
+            {
+                "name": "bincodetransform_test_case_1",
+                "parameters": {
+                    "data": "titanic",
+                    "object": "bin_fit_op",
+                    "accumulate": "passenger"
+                }
+            }
+        ],
         "CFilter": [
             {
                 "name": "cfilter_test_case_1",
@@ -142,6 +152,37 @@
                     "target_columns": ["fare"],
                     "target_datatype": "integer",
                     "accumulate": ["passenger", "name", "ticket"]
+                }
+            }
+        ],
+        "DecisionForest": [
+            {
+                "name": "decisionforest_test_case_1",
+                "parameters": {
+                            "data": "boston",
+                            "input_columns": [
+                                "crim",
+                                "zn",
+                                "indus",
+                                "chas",
+                                "nox",
+                                "rm",
+                                "age",
+                                "dis",
+                                "rad",
+                                "tax",
+                                "ptratio",
+                                "black",
+                                "lstat"
+                            ],
+                            "response_column": "medv",
+                            "max_depth": 12,
+                            "num_trees": 4,
+                            "min_node_size": 1,
+                            "mtry": 3,
+                            "mtry_seed": 1,
+                            "seed": 1,
+                            "tree_type": "REGRESSION"
                 }
             }
         ],
@@ -744,17 +785,7 @@
                 "name": "svm_test_case_1",
                 "parameters": {
                         "data": "scale_transform_op2",
-                        "input_columns": [
-                            "MedInc",
-                            "HouseAge",
-                            "AveRooms",
-                            "AveBedrms",
-                            "Population",
-                            "AveOccup",
-                            "Latitude",
-                            "Longitude"
-                        ],
-                        "response_column": "MedHouseVal",
+                        "formula": "MedHouseVal ~ MedInc+HouseAge+AveRooms+AveBedrms+Population+AveOccup+Latitude+Longitude",
                         "model_type": "Regression"
                 }
             }
@@ -906,13 +937,44 @@
         "TDDecisionForestPredict": [
             {
                 "name": "tddecisionforestpredict_test_case_1",
-                "parameters": {}
+                "parameters": {
+                        "newdata": "boston",
+                        "object": "decision_forest_op",
+                        "id_column": "id"
+                }
             }
         ],
         "TDNaiveBayesPredict": [
             {
                 "name": "tdnaivebayespredict_test_case_1",
-                "parameters": {}
+                "parameters": {
+                        "data": "housing_test",
+                        "object": "naive_bayes_op",
+                        "id_column": "sn",
+                        "numeric_inputs": [
+                            "price",
+                            "lotsize",
+                            "bedrooms",
+                            "bathrms",
+                            "stories",
+                            "garagepl"
+                        ],
+                        "categorical_inputs": [
+                            "driveway",
+                            "recroom",
+                            "fullbase",
+                            "gashw",
+                            "airco",
+                            "prefarea"
+                        ],
+                        "responses": [
+                            "Classic",
+                            "Eclectic",
+                            "bungalow"
+                        ],
+                        "accumulate": "homestyle",
+                        "output_prob": true
+                }
             }
         ],
         "TFIDF": [
@@ -1010,8 +1072,7 @@
                         "id_columns": [
                             "species",
                             "id"
-                        ],
-                        "persist": true
+                        ]
                 }
             }
         ],
@@ -1145,12 +1206,7 @@
                 "name": "xgboost_test_case_1",
                 "parameters": {
                         "data": "titanic",
-                        "input_columns": [
-                            "age",
-                            "survived",
-                            "pclass"
-                        ],
-                        "response_column": "fare",
+                        "formula": "fare ~ age + survived + pclass",
                         "max_depth": 3,
                         "lambda1": 1000.0,
                         "model_type": "Regression",
@@ -1166,13 +1222,7 @@
                 "parameters": {
                         "newdata": "titanic",
                         "object": "xgboost_op2",
-                        "id_column": "passenger",
-                        "object_order_column": [
-                            "task_index",
-                            "tree_num",
-                            "iter",
-                            "tree_order"
-                        ]
+                        "id_column": "passenger"
                 }
             }
         ],
