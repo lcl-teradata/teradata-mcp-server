@@ -449,8 +449,6 @@ def main():
         # Setup for VectorDistance
         load_example_data("vectordistance", ["target_mobile_data_dense", "ref_mobile_data_dense"])
 
-        # Setup for WhichMax
-        # Setup for WhichMin
         # Setup for WordEmbeddings
         load_example_data("teradataml", ["word_embed_model", "word_embed_input_table1"])
 
@@ -476,14 +474,177 @@ def main():
         # Cleanup for Antiselect.
         db_drop_table(table_name="antiselect_input", suppress_error=True)
 
+        # Cleanup for Apriori.
+        db_drop_table(table_name="trans_dense", suppress_error=True)
+        db_drop_table(table_name="trans_sparse", suppress_error=True)
+
+        # Cleanup for BincodeFit & Transform.
+        db_drop_table(table_name="titanic", suppress_error=True)
+        db_drop_table(table_name="bin_fit_ip", suppress_error=True)
+        db_drop_table(table_name="bin_fit_op", suppress_error=True)
+
+        # Cleanup for CFilter
+        db_drop_table(table_name="grocery_transaction", suppress_error=True)
+
+        # Cleanup for CategoricalSummary
+        db_drop_table(table_name="cat_summary_op", suppress_error=True)
+
+        # Cleanup for ChiSq
+        db_drop_table(table_name="chi_sq_input", suppress_error=True)
+
         # Cleanup for ClassificationEvaluator
         db_drop_table(table_name='CVTable', suppress_error=True)
 
-        # Cleanup for ChiSq
+        # Cleanup for ColumnSummary - uses titanic table (cleaned elsewhere)
 
+        # Cleanup for ColumnTransformer - uses bin_fit_op (cleaned elsewhere)
 
         # Cleanup for ConvertTo
         db_drop_table(table_name="convert_to_output_tbl", suppress_error=True)
+
+        # Cleanup for DecisionForest & Predict
+        db_drop_table(table_name="boston", suppress_error=True)
+        db_drop_table(table_name="decision_forest_op", suppress_error=True)
+
+        # Cleanup for OneHotEncodingFit & Transform
+        db_drop_table(table_name="one_hot_op", suppress_error=True)
+
+        # Cleanup for GetFutileColumns - uses cat_summary_op (cleaned elsewhere)
+
+        # Cleanup for Fit
+        db_drop_table(table_name="iris_input", suppress_error=True)
+        db_drop_table(table_name="transformation_table", suppress_error=True)
+        db_drop_table(table_name="fit_op", suppress_error=True)
+
+        # Cleanup for KMeans
+        db_drop_table(table_name="computers_train1", suppress_error=True)
+        db_drop_table(table_name="kmeans_table", suppress_error=True)
+        db_drop_table(table_name="kmeans_op", suppress_error=True)
+
+        # Cleanup for KNN
+        db_drop_table(table_name="computers_train1_clustered", suppress_error=True)
+        db_drop_table(table_name="computers_test1", suppress_error=True)
+        db_drop_table(table_name="knn_OHE_op", suppress_error=True)
+
+        # Cleanup for MovingAverage
+        db_drop_table(table_name="ibm_stock", suppress_error=True)
+
+        # Cleanup for NerExtractor
+        db_drop_table(table_name="ner_input_eng", suppress_error=True)
+        db_drop_table(table_name="ner_dict", suppress_error=True)
+        db_drop_table(table_name="ner_rule", suppress_error=True)
+
+        # Cleanup for NGramSplitter
+        db_drop_table(table_name="paragraphs_input", suppress_error=True)
+
+        # Cleanup for NaiveBayesTextClassifierPredict & Trainer
+        db_drop_table(table_name="complaints_tokens_test", suppress_error=True)
+        db_drop_table(table_name="token_table", suppress_error=True)
+        db_drop_table(table_name="nbt_op", suppress_error=True)
+
+        # Cleanup for NonLinearCombineFit & Transform
+        db_drop_table(table_name="non_linear_fit_op", suppress_error=True)
+
+        # Cleanup for NumApply
+        db_drop_table(table_name="numerics", suppress_error=True)
+
+        # Cleanup for OneClassSVM & Predict
+        db_drop_table(table_name="diabetes", suppress_error=True)
+        db_drop_table(table_name="cal_housing_ex_raw", suppress_error=True)
+        db_drop_table(table_name="scale_transform_op", suppress_error=True)
+        db_drop_table(table_name="one_class_svm_op", suppress_error=True)
+
+        # Cleanup for OneHotEncodingFit & Transform (additional)
+        db_drop_table(table_name="one_hot_fit_op", suppress_error=True)
+
+        # Cleanup for OrdinalEncodingFit & Transform
+        db_drop_table(table_name="ordinal_fit_op", suppress_error=True)
+
+        # Cleanup for OutlierFilterFit & Transform
+        db_drop_table(table_name="outlier_fit_op", suppress_error=True)
+
+        # Cleanup for Pack
+        db_drop_table(table_name="ville_temperature", suppress_error=True)
+
+        # Cleanup for Pivoting & Unpivoting
+        db_drop_table(table_name="titanic_dataset_unpivoted", suppress_error=True)
+
+        # Cleanup for PolynomialFeaturesFit & Transform
+        db_drop_table(table_name="poly_fit_op", suppress_error=True)
+
+        # Cleanup for QQNorm
+        db_drop_table(table_name="rank_table", suppress_error=True)
+
+        # Cleanup for ROC
+        db_drop_table(table_name="roc_input", suppress_error=True)
+
+        # Cleanup for RandomProjectionFit, RandomProjectionMinComponents & Transform
+        db_drop_table(table_name="stock_movement", suppress_error=True)
+        db_drop_table(table_name="random_proj_fit_op", suppress_error=True)
+
+        # Cleanup for RowNormalizeFit & Transform
+        db_drop_table(table_name="row_normalize_fit_op", suppress_error=True)
+
+        # Cleanup for SMOTE
+        db_drop_table(table_name="iris_test", suppress_error=True)
+
+        # Cleanup for SVM, SVMPredict & SVMSparsePredict
+        db_drop_table(table_name="scale_transform_op2", suppress_error=True)
+        db_drop_table(table_name="svm_op", suppress_error=True)
+
+        # Cleanup for ScaleFit & Transform
+        db_drop_table(table_name="scale_housing", suppress_error=True)
+        db_drop_table(table_name="scale_fit_op", suppress_error=True)
+
+        # Cleanup for SentimentExtractor
+        db_drop_table(table_name="sentiment_extract_input", suppress_error=True)
+
+        # Cleanup for Shap
+        db_drop_table(table_name="xgboost_op", suppress_error=True)
+
+        # Cleanup for Silhouette
+        db_drop_table(table_name="mobile_data", suppress_error=True)
+
+        # Cleanup for SimpleImputeFit & Transform
+        db_drop_table(table_name="simple_impute_fit_op", suppress_error=True)
+
+        # Cleanup for StringSimilarity
+        db_drop_table(table_name="strsimilarity_input", suppress_error=True)
+
+        # Cleanup for TDNaiveBayesPredict
+        db_drop_table(table_name="housing_train", suppress_error=True)
+        db_drop_table(table_name="housing_test", suppress_error=True)
+        db_drop_table(table_name="naive_bayes_op", suppress_error=True)
+
+        # Cleanup for TargetEncodingFit & Transform
+        db_drop_table(table_name="category_data_op", suppress_error=True)
+        db_drop_table(table_name="target_encoding_fit_op", suppress_error=True)
+
+        # Cleanup for TextMorph
+        db_drop_table(table_name="words_input", suppress_error=True)
+        db_drop_table(table_name="pos_input", suppress_error=True)
+
+        # Cleanup for TextParser
+        db_drop_table(table_name="complaints", suppress_error=True)
+        db_drop_table(table_name="stop_words", suppress_error=True)
+
+        # Cleanup for Unpack
+        db_drop_table(table_name="ville_tempdata", suppress_error=True)
+        db_drop_table(table_name="ville_tempdata1", suppress_error=True)
+
+        # Cleanup for Unpivoting
+        db_drop_table(table_name="unpivot_input", suppress_error=True)
+
+        # Cleanup for VectorDistance
+        db_drop_table(table_name="target_mobile_data_dense", suppress_error=True)
+        db_drop_table(table_name="ref_mobile_data_dense", suppress_error=True)
+
+        # Cleanup for WordEmbeddings
+        db_drop_table(table_name="word_embed_model", suppress_error=True)
+        db_drop_table(table_name="word_embed_input_table1", suppress_error=True)
+
+        # Cleanup for XGBoost & Predict
+        db_drop_table(table_name="xgboost_op2", suppress_error=True)
 
         print("Or you can run the cleanup action of this script with: `analytic_functions_setup.py --action cleanup`")
     else:
