@@ -22,14 +22,6 @@ from datetime import datetime
 from mcp.client.session import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
 
-def log_message(msg):
-    f = r'C:\Users\pg255042\Downloads\mcp_logs_local.txt'
-    # First clean the file even if it exists
-    # with open(f, 'w') as file:
-    #     file.write("")
-    #
-    with open(f, 'a') as file:
-        file.write(f"{msg}\n")
 
 class MCPTestRunner:
     def __init__(self, test_cases_files: list[str] = ["tests/cases/core_test_cases.json"], verbose: bool = False):
@@ -45,10 +37,10 @@ class MCPTestRunner:
     def _find_project_root(self) -> str:
         """Find the project root directory (contains profiles.yml)."""
         current = os.path.abspath(os.getcwd())
-        # while current != '/':
-        #     if os.path.exists(os.path.join(current, 'profiles.yml')):
-        #         return current
-        #     current = os.path.dirname(current)
+        while current != '/':
+            if os.path.exists(os.path.join(current, 'profiles.yml')):
+                return current
+            current = os.path.dirname(current)
 
         return os.getcwd()
 
