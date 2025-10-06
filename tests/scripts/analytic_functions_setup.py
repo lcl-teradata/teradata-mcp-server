@@ -34,7 +34,7 @@ def main():
         load_example_data("teradataml", ["insect_sprays"])
 
         # Setup for Antiselect.
-        load_example_data("antiselect", ["antiselect_input"])
+        load_example_data("dataframe", ["sales"])
 
         # Setup for Apriori.
         load_example_data("apriori", ["trans_dense", "trans_sparse"])
@@ -105,6 +105,34 @@ def main():
         glm_5.result.to_sql(table_name="glm_op", if_exists="replace")
 
         # Setup for GLMPerSegment.
+        load_example_data("decisionforestpredict", ["housing_train"])
+        load_example_data("teradataml", ["housing_train_attribute", "housing_train_parameter"])
+
+        # Create teradataml DataFrame objects.
+        housing_train = DataFrame.from_table("housing_train")
+        housing_train_attribute = DataFrame.from_table("housing_train_attribute")
+        housing_train_parameter = DataFrame.from_table("housing_train_parameter")
+
+        # Filter the rows from train dataset with homestyle as Classic and Eclectic.
+        binomial_housing_train = DataFrame('housing_train', index_label="homestyle")
+        binomial_housing_train = binomial_housing_train.filter(like='ic', axis='rows')
+
+        # GLMPerSegment() function requires features in numeric format for processing,
+        # so dropping the non-numeric columns.
+        binomial_housing_train = binomial_housing_train.drop(columns=["driveway", "recroom",
+                                                                      "gashw", "airco", "prefarea",
+                                                                      "fullbase"])
+        gaussian_housing_train = binomial_housing_train.drop(columns="homestyle")
+        gaussian_housing_train.result.to_sql(table_name="gaussian_housing_train", if_exists="replace")
+
+        GLMPerSegment_out_1 = GLMPerSegment(data=gaussian_housing_train,
+                                            data_partition_column="stories",
+                                            input_columns=['garagepl', 'lotsize', 'bedrooms', 'bathrms'],
+                                            response_column="price",
+                                            family="Gaussian",
+                                            iter_max=1000,
+                                            batch_size=9)
+        GLMPerSegment_out_1.result.to_sql(table_name="glm_per_segment_op", if_exists="replace")
 
         # Setup for GetFutileColumns.
         load_example_data("teradataml", ["titanic"])
@@ -409,6 +437,29 @@ def main():
 
         # Setup for TrainTestSplit
         # Setup for Transform
+        load_example_data("teradataml", ["iris_input", "transformation_table"])
+        # Create teradataml DataFrame objects.
+        iris_input = DataFrame.from_table("iris_input")
+        transformation_df = DataFrame.from_table("transformation_table")
+        transformation_df = transformation_df.drop(['id'], axis=0)
+
+        # Example 1: Run Fit() with all arguments and pass the output to Transform().
+        fit_obj = Fit(data=iris_input,
+                     object=transformation_df,
+                     object_order_column='TargetColumn'
+                     )
+        fit_obj.result.to_sql(table_name="fit_op", if_exists="replace")
+
+        # Run Transform() with persist as True in order to save the result.
+        transform_result = Transform(data=iris_input,
+                                     data_partition_column='sepal_length',
+                                     data_order_column='sepal_length',
+                                     object=fit_obj.result,
+                                     object_order_column='TargetColumn',
+                                     id_columns=['species', 'id'],
+                                     persist=True
+                                     )
+
         # Setup for UnivariateStatistics
 
         # Setup for Unpack

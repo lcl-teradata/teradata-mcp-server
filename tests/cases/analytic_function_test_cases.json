@@ -178,7 +178,7 @@
             {
                 "name": "glm_test_case_1",
                 "parameters": {
-                        "data": "housing_seg",
+                        "data": "housing_train_segment",
                         "input_columns": [
                             "bedrooms",
                             "bathrms",
@@ -201,7 +201,20 @@
         "GLMPerSegment": [
             {
                 "name": "glmpersegment_test_case_1",
-                "parameters": {}
+                "parameters": {
+                        "data": "gaussian_housing_train",
+                        "data_partition_column": "stories",
+                        "input_columns": [
+                            "garagepl",
+                            "lotsize",
+                            "bedrooms",
+                            "bathrms"
+                        ],
+                        "response_column": "price",
+                        "family": "Gaussian",
+                        "iter_max": 1000,
+                        "batch_size": 9
+                }
             }
         ],
         "TDGLMPredict": [
@@ -220,7 +233,13 @@
         "GLMPredictPerSegment": [
             {
                 "name": "glmpredictpersegment_test_case_1",
-                "parameters": {}
+                "parameters": {
+                        "newdata": "gaussian_housing_train",
+                        "newdata_partition_column": "stories",
+                        "object": "glm_per_segment_op",
+                        "object_partition_column": "stories",
+                        "id_column": "sn"
+                }
             }
         ],
         "GetFutileColumns": [
@@ -758,7 +777,7 @@
             {
                 "name": "scalefit_test_case_1",
                 "parameters": {
-                        "data": "scaling_house",
+                        "data": "scale_housing",
                         "target_columns": "lotsize",
                         "scale_method": "MEAN",
                         "miss_value": "KEEP",
@@ -772,7 +791,7 @@
             {
                 "name": "scaletransform_test_case_1",
                 "parameters": {
-                        "data": "scaling_house",
+                        "data": "scale_housing",
                         "object": "scale_fit_op",
                         "accumulate": "price"
                 }
@@ -948,7 +967,7 @@
                 "name": "textmorph_test_case_1",
                 "parameters": {
                         "data": "words_input",
-                        "word_column": "data2",
+                        "word_column": "word",
                         "pos": [
                             "noun",
                             "verb"
@@ -987,7 +1006,15 @@
         "Transform": [
             {
                 "name": "transform_test_case_1",
-                "parameters": {}
+                "parameters": {
+                        "data": "iris_input",
+                        "object": "fit_op",
+                        "id_columns": [
+                            "species",
+                            "id"
+                        ],
+                        "persist": true
+                }
             }
         ],
         "UnivariateStatistics": [
