@@ -215,7 +215,7 @@ class MCPTestRunner:
                     check=False, shell=True,
                     capture_output=True,
                     text=True,
-                    timeout=300,  # 5 minute timeout
+                    timeout=3000,  # 50 minute timeout
                     env={**os.environ}  # Pass current environment including DATABASE_URI
                 )
 

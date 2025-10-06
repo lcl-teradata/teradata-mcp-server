@@ -62,7 +62,6 @@ TD_ANALYTIC_FUNCS = [
     'SMOTE',
     'SVM',
     'SVMPredict',
-    'SVMSparsePredict',
     'ScaleFit',
     'ScaleTransform',
     'SentimentExtractor',

@@ -2,7 +2,7 @@ import argparse
 import os
 from urllib.parse import urlparse
 
-from teradataml import create_context, db_drop_table, load_example_data, remove_context
+from teradataml import *
 
 
 def main():
@@ -36,6 +36,409 @@ def main():
         # Setup for Antiselect.
         load_example_data("antiselect", ["antiselect_input"])
 
+        # Setup for Apriori.
+        load_example_data("apriori", ["trans_dense", "trans_sparse"])
+
+        # Setup for Attribution.
+        load_example_data("attribution", [
+            "attribution_sample_table1",
+            "attribution_sample_table2",
+            "conversion_event_table",
+            "optional_event_table",
+            "model1_table",
+            "model2_table"
+        ])
+
+        # Setup for BincodeFit
+        load_example_data("teradataml", ["titanic", "bin_fit_ip"])
+
+        # Setup for BincodeTransform
+
+        # Setup for CFilter
+        load_example_data("dataframe", ["grocery_transaction"])
+
+        # Setup for CategoricalSummary
+        load_example_data("teradataml", ["titanic"])
+
+        # Setup for ChiSq
+        load_example_data("teradataml", "chi_sq")
+
+        # Setup for ClassificationEvaluator
+        load_example_data("teradataml", ["titanic"])
+        df = DataFrame("titanic")
+        ndf = df.assign(pcol=df.survived)
+        ndf.to_sql(table_name="CVTable", if_exists="replace")
+
+        # Setup for ColumnSummary
+        load_example_data("teradataml", ["titanic"])
+
+        # Setup for ColumnTransformer
+        titanic = DataFrame.from_table("titanic")
+        bin_code = BincodeFit(data=titanic,
+                              target_columns='age',
+                              method_type='Equal-Width',
+                              nbins=2,
+                              label_prefix='label_prefix')
+        bin_code.output.to_sql(table_name="bin_fit_op", if_exists="replace")
+
+        one_hot_encoding = OneHotEncodingFit(data=titanic,
+                                             is_input_dense=True,
+                                             target_column="sex",
+                                             categorical_values=["male", "female"],
+                                             other_column="other")
+        one_hot_encoding.result.to_sql(table_name="one_hot_op", if_exists="replace")
+
+        # Setup for GLM.
+        load_example_data('glm', ['housing_train_segment', 'housing_train_parameter'])
+        housing_seg = DataFrame('housing_train_segment')
+        housing_parameter = DataFrame('housing_train_parameter')
+        glm_5 = GLM(data=housing_seg,
+                    input_columns=['bedrooms', 'bathrms', 'stories', 'driveway', 'recroom', 'fullbase', 'gashw',
+                                   'airco'],
+                    response_column='homestyle',
+                    family='binomial',
+                    iter_max=1000,
+                    data_partition_column='partition_id',
+                    parameter_data=housing_parameter,
+                    parameter_data_partition_column='partition_id'
+                    )
+        glm_5.result.to_sql(table_name="glm_op", if_exists="replace")
+
+        # Setup for GLMPerSegment.
+
+        # Setup for GetFutileColumns.
+        load_example_data("teradataml", ["titanic"])
+        CategoricalSummary_out = CategoricalSummary(data=titanic,
+                                                    target_columns=["cabin", "sex", "ticket"])
+        CategoricalSummary_out.result.to_sql(table_name="cat_summary_op", if_exists="replace")
+
+        # Setup for Fit.
+        load_example_data("teradataml", ["iris_input", "transformation_table"])
+
+        # Setup for KMeans.
+        load_example_data("kmeans", "computers_train1")
+        load_example_data("kmeans",'kmeans_table')
+        computers_train1 = DataFrame.from_table("computers_train1")
+        KMeans_out = KMeans(id_column="id",
+                            target_columns=['price', 'speed'],
+                            data=computers_train1,
+                            num_clusters=2)
+        KMeans_out.result.to_sql(table_name="kmeans_op", if_exists="replace")
+
+        # Setup for KNN.
+        load_example_data("knn", ["computers_train1_clustered", "computers_test1"])
+
+        # Create teradataml DataFrame objects.
+        computers_test1 = DataFrame.from_table("computers_test1")
+        computers_train1_clustered = DataFrame.from_table("computers_train1_clustered")
+
+        # Generate fit object for column "computer_category".
+        fit_obj = OneHotEncodingFit(data=computers_train1_clustered,
+                                    is_input_dense=True,
+                                    target_column="computer_category",
+                                    categorical_values=["ultra", "special"],
+                                    other_column="other")
+
+        # Encode "ultra" and "special" values of column "computer_category".
+        computers_train1_encoded = OneHotEncodingTransform(data=computers_train1_clustered,
+                                                           object=fit_obj.result,
+                                                           is_input_dense=True)
+        computers_train1_encoded.result.to_sql(table_name="knn_OHE_op", if_exists="replace")
+
+        # Setup for MovingAverage.
+        load_example_data("movavg", ["ibm_stock"])
+
+        # Setup for NerExtractor.
+        load_example_data("tdnerextractor", ["ner_input_eng", "ner_dict", "ner_rule"])
+
+        # Setup for NGramSplitter.
+        load_example_data("ngrams", ["paragraphs_input"])
+
+        # Setup for NPath.
+        load_example_data("NPath", ["impressions", "clicks2", "tv_spots", "clickstream"])
+
+        # Setup for NaiveBayesTextClassifierPredict & Trainer.
+        load_example_data("NaiveBayesTextClassifierPredict", ["complaints_tokens_test", "token_table"])
+
+        token_table = DataFrame("token_table")
+
+        # Create a model which is output of NaiveBayesTextClassifierTrainer.
+        nbt_out = NaiveBayesTextClassifierTrainer(data=token_table,
+                                                  token_column='token',
+                                                  doc_id_column='doc_id',
+                                                  doc_category_column='category',
+                                                  model_type="Bernoulli",
+                                                  data_partition_column='category')
+        nbt_out.result.to_sql(table_name="nbt_op", if_exists="replace")
+
+        # Setup for NonLinearCombineFit & Transform
+        Fit_out = NonLinearCombineFit(data=titanic,
+                                      target_columns=["sibsp", "parch", "fare"],
+                                      formula="Y=(X0+X1+1)*X2",
+                                      result_column="total_cost")
+        Fit_out.result.to_sql(table_name="non_linear_fit_op", if_exists="replace")
+
+        # Setup for NumApply
+        load_example_data("teradataml", ["numerics"])
+
+        # setup for OneClassSVM & Predict
+        load_example_data("larpredict", ["diabetes"])
+        load_example_data("teradataml", ["cal_housing_ex_raw"])
+
+        # Create teradataml DataFrame objects.
+        data_input = DataFrame.from_table("cal_housing_ex_raw")
+
+        # Scale "target_columns" with respect to 'STD' value of the column.
+        fit_obj = ScaleFit(data=data_input,
+                           target_columns=['MedInc', 'HouseAge', 'AveRooms',
+                                           'AveBedrms', 'Population', 'AveOccup',
+                                           'Latitude', 'Longitude'],
+                           scale_method="STD")
+
+        # Transform the data.
+        transform_obj = ScaleTransform(data=data_input,
+                                       object=fit_obj.output,
+                                       accumulate=["id", "MedHouseVal"])
+        transform_obj.result.to_sql(table_name="scale_transform_op", if_exists="replace")
+        # Train the input data by OneClassSVM which helps model
+        # to find anomalies in transformed data.
+        one_class_svm = OneClassSVM(data=transform_obj.result,
+                                   input_columns=['MedInc', 'HouseAge', 'AveRooms',
+                                                  'AveBedrms', 'Population', 'AveOccup',
+                                                  'Latitude', 'Longitude'],
+                                   local_sgd_iterations=537,
+                                   batch_size=1,
+                                   learning_rate='constant',
+                                   initial_eta=0.01,
+                                   lambda1=0.1,
+                                   alpha=0.0,
+                                   momentum=0.0,
+                                   iter_max=1
+                                   )
+        one_class_svm.result.to_sql(table_name="one_class_svm_op", if_exists="replace")
+
+        # Setup for OneHotEncodingFit & Transform
+        load_example_data("teradataml", ["titanic"])
+        fit_obj = OneHotEncodingFit(data=titanic,
+                                    is_input_dense=True,
+                                    target_column="sex",
+                                    categorical_values=["male", "female"],
+                                    other_column="other")
+        fit_obj.result.to_sql(table_name="one_hot_fit_op", if_exists="replace")
+
+        # Setup for OrdinalEncodingFit & Transform
+        load_example_data("teradataml", ["titanic"])
+        ordinal_encodingfit_res_2 = OrdinalEncodingFit(target_column='sex',
+                                                       approach='LIST',
+                                                       categories=['category0', 'category1'],
+                                                       ordinal_values=[1, 2],
+                                                       start_value=0,
+                                                       default_value=-1,
+                                                       data=titanic)
+        ordinal_encodingfit_res_2.result.to_sql(table_name="ordinal_fit_op", if_exists="replace")
+
+        # Setup for OutlierFilterFit & Transform
+        fit_obj = OutlierFilterFit(data=titanic,
+                                   target_columns="fare",
+                                   lower_percentile=0.1,
+                                   upper_percentile=0.9,
+                                   outlier_method="PERCENTILE",
+                                   replacement_value="MEDIAN",
+                                   percentile_method="PERCENTILECONT")
+        fit_obj.result.to_sql(table_name="outlier_fit_op", if_exists="replace")
+
+        # Setup for Pack.
+        load_example_data("pack", ["ville_temperature"])
+
+        # Setup for Pivoting & Unpivoting.
+        load_example_data('unpivot', 'titanic_dataset_unpivoted')
+
+        # Setup for PolynomialFeaturesFit & Transform
+        load_example_data("teradataml", ["numerics"])
+        numerics = DataFrame.from_table("numerics")
+        fit_obj = PolynomialFeaturesFit(data=numerics,
+                                        target_columns=["integer_col", "smallint_col"],
+                                        degree=2)
+        fit_obj.output.to_sql(table_name="poly_fit_op", if_exists="replace")
+
+        # Setup for QQNorm
+        load_example_data("teradataml", ["rank_table"])
+
+        # Setup for ROC
+        load_example_data("roc", ["roc_input"])
+
+        # Setup for RandomProjectionFit, RandomProjectionMinComponents & Transform
+        load_example_data("teradataml", "stock_movement")
+        stock_movement = DataFrame.from_table("stock_movement")
+        fit_obj = RandomProjectionFit(data=stock_movement,
+                                      target_columns="1:",
+                                      epsilon=0.9,
+                                      num_components=343)
+        fit_obj.result.to_sql(table_name="random_proj_fit_op", if_exists="replace")
+
+        # Setup for RowNormalizeFit & Transform
+        load_example_data("teradataml", ["numerics"])
+        numerics = DataFrame.from_table("numerics")
+        fit_obj = RowNormalizeFit(data=numerics,
+                                  target_columns=["integer_col", "smallint_col"],
+                                  approach="INDEX",
+                                  base_column="integer_col",
+                                  base_value=100.0)
+        fit_obj.output.to_sql(table_name="row_normalize_fit_op", if_exists="replace")
+
+        # Setup for SMOTE
+        load_example_data("dataframe", "iris_test")
+
+        # Setup for SVM, SVMPredict & SVMSparsePredict
+
+        # Load the example data.
+        load_example_data("teradataml", ["cal_housing_ex_raw"])
+
+        # Create teradataml DataFrame objects.
+        data_input = DataFrame.from_table("cal_housing_ex_raw")
+
+        # Scale "target_columns" with respect to 'STD' value of the column.
+        fit_obj = ScaleFit(data=data_input,
+                           target_columns=['MedInc', 'HouseAge', 'AveRooms',
+                                           'AveBedrms', 'Population', 'AveOccup',
+                                           'Latitude', 'Longitude'],
+                           scale_method="STD")
+
+        # Transform the data.
+        transform_obj = ScaleTransform(data=data_input,
+                                       object=fit_obj.output,
+                                       accumulate=["id", "MedHouseVal"])
+        transform_obj.result.to_sql(table_name="scale_transform_op2", if_exists="replace")
+
+        # Train the transformed data using SVM() where "model_type" is 'Regression'.
+        svm_obj1 = SVM(data=transform_obj.result,
+                      input_columns=['MedInc', 'HouseAge', 'AveRooms',
+                                     'AveBedrms', 'Population', 'AveOccup',
+                                     'Latitude', 'Longitude'],
+                      response_column="MedHouseVal",
+                      model_type="Regression"
+                      )
+        svm_obj1.result.to_sql(table_name="svm_op", if_exists="replace")
+
+        # Setup for ScaleFit & Transform
+        load_example_data("teradataml", ["scale_housing"])
+
+        scaling_house = DataFrame.from_table("scale_housing")
+
+        fit_obj = ScaleFit(data=scaling_house,
+                           target_columns="lotsize",
+                           scale_method="MEAN",
+                           miss_value="KEEP",
+                           global_scale=False,
+                           multiplier="1",
+                           intercept="0")
+        fit_obj.output.to_sql(table_name="scale_fit_op", if_exists="replace")
+
+        # Setup for SentimentExtractor
+        load_example_data("sentimentextractor", ["sentiment_extract_input"])
+
+        # Setup for Sessionize
+        load_example_data("sessionize", ["sessionize_table"])
+
+        # Setup for Shap
+        load_example_data("byom", "iris_input")
+        load_example_data("teradataml", ["cal_housing_ex_raw"])
+        iris_input = DataFrame("iris_input")
+
+        XGBoost_out = XGBoost(data=iris_input,
+                              input_columns=['sepal_length', 'sepal_width', 'petal_length', 'petal_width'],
+                              response_column='species',
+                              model_type='Classification',
+                              iter_num=25)
+        XGBoost_out.result.to_sql(table_name="xgboost_op", if_exists="replace")
+
+        # Setup for Silhouette
+        load_example_data("teradataml", ["mobile_data"])
+
+        # Setup for SimpleImputeFit & Transform
+        fit_obj = SimpleImputeFit(data=titanic,
+                                  stats_columns="age",
+                                  literals_columns="cabin",
+                                  stats="median",
+                                  literals="General")
+        fit_obj.output.to_sql(table_name="simple_impute_fit_op", if_exists="replace")
+
+        # Setup for StrApply
+
+        # Setup for StringSimilarity
+        load_example_data("stringsimilarity", ["strsimilarity_input"])
+
+        # Setup for TDDecisionForestPredict
+        # Setup for TDNaiveBayesPredict
+        # Setup for TFIDF
+        load_example_data('naivebayestextclassifier', "token_table")
+
+        # Setup for TargetEncodingFit & Transform
+
+        # Create teradataml DataFrame objects.
+        data_input = DataFrame.from_table("titanic")
+
+        # Find the distinct values and counts for column 'sex' and 'embarked'.
+        categorical_summ = CategoricalSummary(data=data_input,
+                                              target_columns = ["sex", "embarked"]
+                                              )
+
+        # Find the distinct count of 'sex' and 'embarked' in which only 2 column should be present
+        #  name 'ColumnName' and 'CategoryCount'.
+        category_data=categorical_summ.result.groupby('ColumnName').count()
+        category_data = category_data.assign(drop_columns=True,
+                                             ColumnName=category_data.ColumnName,
+                                             CategoryCount=category_data.count_DistinctValue)
+        category_data.to_sql(table_name="category_data_op", if_exists="replace")
+
+        # Generates the required hyperparameters when "encoder_method" is 'CBM_BETA'.
+        TargetEncodingFit_out = TargetEncodingFit(data=data_input,
+                                                  category_data=category_data,
+                                                  encoder_method='CBM_BETA',
+                                                  target_columns=['sex', 'embarked'],
+                                                  response_column='survived',
+                                                  default_values=[-1, -2]
+                                                  )
+        TargetEncodingFit_out.result.to_sql(table_name="target_encoding_fit_op", if_exists="replace")
+
+        # Setup for TextMorph
+        load_example_data("textmorph", ["words_input", "pos_input"])
+
+        # Setup for TextParser
+        load_example_data("textparser", ["complaints", "stop_words"])
+
+        # Setup for TrainTestSplit
+        # Setup for Transform
+        # Setup for UnivariateStatistics
+
+        # Setup for Unpack
+        load_example_data("Unpack", ["ville_tempdata", "ville_tempdata1"])
+
+        # Setup for Unpivoting
+        load_example_data('unpivot', 'unpivot_input')
+
+        # Setup for VectorDistance
+        load_example_data("vectordistance", ["target_mobile_data_dense", "ref_mobile_data_dense"])
+
+        # Setup for WhichMax
+        # Setup for WhichMin
+        # Setup for WordEmbeddings
+        load_example_data("teradataml", ["word_embed_model", "word_embed_input_table1"])
+
+        # Setup for XGBoost & Predict
+        XGBoost_out_1 = XGBoost(data=titanic,
+                                input_columns=["age", "survived", "pclass"],
+                                response_column='fare',
+                                max_depth=3,
+                                lambda1=1000.0,
+                                model_type='Regression',
+                                seed=-1,
+                                shrinkage_factor=0.1,
+                                iter_num=2)
+        XGBoost_out_1.result.to_sql(table_name="xgboost_op2", if_exists="replace")
+
+        # Setup for ZTest
+
     elif args.action in ('cleanup'):
 
         # Cleanup for ANOVA.
@@ -43,6 +446,13 @@ def main():
 
         # Cleanup for Antiselect.
         db_drop_table(table_name="antiselect_input", suppress_error=True)
+
+        # Cleanup for ClassificationEvaluator
+        db_drop_table(table_name='CVTable', suppress_error=True)
+
+
+
+
 
 
         print("Or you can run the cleanup action of this script with: `plot_setup.py --action cleanup`")
