@@ -71,6 +71,13 @@ def create_mcp_app(settings: Settings):
 
     fs_config = None
     if enableEFS or enable_analytic_functions:
+
+        try:
+            import teradataml as tdml
+        except (AttributeError, ImportError, ModuleNotFoundError) as e:
+            logger.warning(f"teradataml not installed - disabling analytic functions: {e}")
+            enable_analytic_functions = False
+
         # Only import FeatureStoreConfig (which depends on tdfs4ds) when EFS tools are enabled
         try:
             from teradata_mcp_server.tools.fs.fs_utils import FeatureStoreConfig
@@ -88,7 +95,6 @@ def create_mcp_app(settings: Settings):
             logger.warning(f"Feature Store module not available - disabling EFS functionality: {e}")
             logger.warning(f"Analytic functions are not available.")
             enableEFS = False
-            enable_analytic_functions = False
 
     # EVS connection (optional)
     evs = None
