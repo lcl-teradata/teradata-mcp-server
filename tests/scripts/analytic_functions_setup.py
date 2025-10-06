@@ -443,9 +443,6 @@ def main():
         # Create teradataml DataFrame objects.
         housing_train = DataFrame.from_table("housing_train")
 
-        # Check the list of available analytic functions.
-        display_analytic_functions()
-
         # Import function  TDNaiveBayesPredict.
         from teradataml import NaiveBayes
 
